@@ -6,7 +6,7 @@ import torch
 from torch.autograd import Variable
 
 import numpy as np
-import cPickle as pickle
+import pickle
 from collections import deque, Counter
 
 
@@ -18,7 +18,11 @@ class RnnParameterData(object):
         self.data_path = data_path
         self.save_path = save_path
         self.data_name = data_name
-        data = pickle.load(open(self.data_path + self.data_name + '.pk', 'rb'))
+        # data = pickle.load(open(self.data_path + self.data_name + '.pk', 'rb'))
+        with open(self.data_path + self.data_name + '.pk', 'rb') as f:
+            u = pickle._Unpickler(f)
+            u.encoding = 'latin1'
+            data = u.load()
         self.vid_list = data['vid_list']
         self.uid_list = data['uid_list']
         self.data_neural = data['data_neural']

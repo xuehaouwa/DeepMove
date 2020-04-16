@@ -15,9 +15,9 @@ from json import encoder
 
 encoder.FLOAT_REPR = lambda o: format(o, '.3f')
 
-from train import run_simple, RnnParameterData, generate_input_history, markov, \
+from codes.train import run_simple, RnnParameterData, generate_input_history, markov, \
     generate_input_long_history, generate_input_long_history2
-from model import TrajPreSimple, TrajPreAttnAvgLongUser, TrajPreLocalAttnLong
+from codes.model import TrajPreSimple, TrajPreAttnAvgLongUser, TrajPreLocalAttnLong
 
 
 def run(args):
@@ -91,7 +91,8 @@ def run(args):
                                                        len([y for x in test_idx for y in test_idx[x]])))
     SAVE_PATH = args.save_path
     tmp_path = 'checkpoint/'
-    os.mkdir(SAVE_PATH + tmp_path)
+    if not os.path.exists(os.path.join(SAVE_PATH, tmp_path)):
+        os.mkdir(SAVE_PATH + tmp_path)
     for epoch in range(parameters.epoch):
         st = time.time()
         if args.pretrain == 0:
@@ -199,11 +200,11 @@ if __name__ == '__main__':
     parser.add_argument('--clip', type=float, default=5.0)
     parser.add_argument('--epoch_max', type=int, default=20)
     parser.add_argument('--history_mode', type=str, default='avg', choices=['max', 'avg', 'whole'])
-    parser.add_argument('--rnn_type', type=str, default='LSTM', choices=['LSTM', 'GRU', 'RNN'])
+    parser.add_argument('--rnn_type', type=str, default='GRU', choices=['LSTM', 'GRU', 'RNN'])
     parser.add_argument('--attn_type', type=str, default='dot', choices=['general', 'concat', 'dot'])
     parser.add_argument('--data_path', type=str, default='../data/')
     parser.add_argument('--save_path', type=str, default='../results/')
-    parser.add_argument('--model_mode', type=str, default='simple_long',
+    parser.add_argument('--model_mode', type=str, default='simple',
                         choices=['simple', 'simple_long', 'attn_avg_long_user', 'attn_local_long'])
     parser.add_argument('--pretrain', type=int, default=1)
     args = parser.parse_args()

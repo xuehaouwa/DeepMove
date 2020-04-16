@@ -47,13 +47,15 @@ class TrajPreSimple(nn.Module):
         b = (param.data for name, param in self.named_parameters() if 'bias' in name)
 
         for t in ih:
-            nn.init.xavier_uniform(t)
+            nn.init.xavier_uniform_(t)
         for t in hh:
-            nn.init.orthogonal(t)
+            nn.init.orthogonal_(t)
         for t in b:
-            nn.init.constant(t, 0)
+            nn.init.constant_(t, 0)
 
     def forward(self, loc, tim):
+        print(loc.size())
+        print(tim.size())
         h1 = Variable(torch.zeros(1, 1, self.hidden_size))
         c1 = Variable(torch.zeros(1, 1, self.hidden_size))
         if self.use_cuda:
@@ -74,6 +76,7 @@ class TrajPreSimple(nn.Module):
         out = self.dropout(out)
 
         y = self.fc(out)
+        print(y.size())
         score = F.log_softmax(y)  # calculate loss by NLLoss
         return score
 
