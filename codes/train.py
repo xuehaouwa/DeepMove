@@ -32,7 +32,6 @@ class RnnParameterData(object):
         self.uid_size = len(self.uid_list)
         self.loc_emb_size = loc_emb_size
         self.tim_emb_size = tim_emb_size
-        self.voc_emb_size = voc_emb_size
         self.uid_emb_size = uid_emb_size
         self.hidden_size = hidden_size
 
